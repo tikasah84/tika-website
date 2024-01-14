@@ -101,3 +101,16 @@ anime
     sliderContainer.style.marginLeft = -(slideWidth * slideIndex) + "px";
   }
 })();
+
+
+function sendEmail() {
+  // Email details
+  var toEmail = 'tikasah84@gmail.com';
+  var subject = 'Job Inquiry';
+
+  // Create the mailto link
+  var mailtoLink = 'mailto:' + toEmail + '?subject=' + encodeURIComponent(subject);
+
+  // Open default email client
+  window.location.href = mailtoLink;
+}
