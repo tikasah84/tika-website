@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- =========================================================
+       BASIC SEO
+  ========================================================== -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>TU / IOE M.Sc. Percentage Calculator (Credit Weighted) | Tribhuvan University</title>
+  <meta name="description" content="Calculate TU/IOE M.Sc. weighted aggregate percentage using Σ(Credit × Marks)/Σ(Credits). Live results, division (Distinction/First/Second), thesis included. Reference: TU portal Master Programs Guidelines PDF." />
+  <meta name="keywords" content="TU M.Sc. percentage calculator, IOE weighted aggregate, Tribhuvan University master percentage, credit hour marks calculator, M.Sc. thesis calculation, TU IOE guidelines" />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="#" />
+
+  <!-- Open Graph (social sharing) -->
+  <meta property="og:title" content="TU / IOE M.Sc. Percentage Calculator (Credit Weighted)" />
+  <meta property="og:description" content="Live credit-weighted M.Sc. percentage calculator (Σ(Credit × Marks)/Σ(Credits)) with division and breakdown. Built for TU/IOE style calculation." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="#" />
+
+  <!-- =========================================================
+       CSS LIBS
+  ========================================================== -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+
+  <style>
+    :root{
+      --primary:#2c3e50;
+      --secondary:#3498db;
+      --accent:#e74c3c;
+      --bg:#f0f4f8;
+      --card-shadow:0 4px 12px rgba(0,0,0,.10);
+      --success:#28a745;
+      --warn:#f39c12;
+      --muted:#6c757d;
+    }
+
+    body{
+      background: var(--bg);
+      color:#333;
+      font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      padding-bottom: 70px;
+    }
+
+    .header{
+      background: linear-gradient(135deg, var(--primary), #1a2a3a);
+      color:#fff;
+      padding: 2rem 0;
+      border-radius:0 0 20px 20px;
+      margin-bottom:2rem;
+      box-shadow: var(--card-shadow);
+      position: relative;
+      overflow:hidden;
+    }
+    .header::before{
+      content:"";
+      position:absolute;
+      top:-50%;
+      left:-50%;
+      width:200%;
+      height:200%;
+      background: radial-gradient(circle, rgba(255,255,255,.12) 0%, rgba(255,255,255,0) 70%);
+      transform: rotate(25deg);
+    }
+
+    .card{
+      border:none;
+      border-radius:15px;
+      box-shadow: var(--card-shadow);
+      transition: transform .25s ease, box-shadow .25s ease;
+      background:#fff;
+      margin-bottom: 18px;
+    }
+    .card:hover{
+      transform: translateY(-4px);
+      box-shadow: 0 10px 22px rgba(0,0,0,.12);
+    }
+    .card-header{
+      background: linear-gradient(to right, var(--primary), #34495e);
+      color:#fff;
+      border-bottom:none;
+      padding:1.1rem 1.25rem;
+      border-radius:15px 15px 0 0 !important;
+      font-weight: 600;
+      font-size: 1.05rem;
+      display:flex;
+      align-items:center;
+      gap:.6rem;
+    }
+
+    .calculator-icon{
+      color: var(--secondary);
+    }
+
+    .section-title{
+      color: var(--primary);
+      border-bottom: 2px solid var(--secondary);
+      padding-bottom: 8px;
+      margin-top: 1.25rem;
+      margin-bottom: 1rem;
+      font-size: 1.05rem;
+      position: relative;
+    }
+    .section-title::after{
+      content:"";
+      position:absolute;
+      bottom:-2px;
+      left:0;
+      width:60px;
+      height:2px;
+      background: var(--accent);
+    }
+
+    .highlight-box{
+      background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+      border-left: 4px solid var(--secondary);
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 18px;
+    }
+
+    .result-card .card-header{
+      background: linear-gradient(to right, #27ae60, #2ecc71);
+    }
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:.4rem;
+      padding:.35rem .7rem;
+      border-radius:999px;
+      font-size:.9rem;
+      font-weight:600;
+      background:#eef2f7;
+      color: var(--primary);
+    }
+    .pill strong{ font-weight:800; }
+    .pill.dist{ background:#e8fff1; color:#1e7e34; }
+    .pill.first{ background:#e8f4ff; color:#1b6da8; }
+    .pill.second{ background:#fff6e8; color:#a96a10; }
+    .pill.none{ background:#ffecec; color:#b02a37; }
+
+    .mini-card{
+      background: #f8fafc;
+      border: 1px solid #eef2f6;
+      border-radius: 12px;
+      padding: 12px;
+      height: 100%;
+    }
+
+    .progress-container{
+      height: 12px;
+      background:#e9ecef;
+      border-radius: 10px;
+      overflow:hidden;
+      margin: 12px 0 6px;
+    }
+    .progress-bar-custom{
+      height:100%;
+      width:0%;
+      background: linear-gradient(to right, #4facfe, #00f2fe);
+      transition: width .25s ease;
+    }
+
+    .table thead th{
+      background: var(--primary);
+      color:#fff;
+      border: none;
+    }
+
+    .btn-accent{
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border: none;
+    }
+    .btn-accent:hover{ filter: brightness(1.05); }
+
+    .print-btn{
+      position: fixed;
+      bottom: 18px;
+      right: 18px;
+      z-index: 1000;
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      box-shadow: 0 6px 16px rgba(0,0,0,.18);
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color:#fff;
+      border:none;
+    }
+
+    .muted{ color: var(--muted); }
+
+    .pulse{
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(52,152,219,.6); }
+      70%{ box-shadow: 0 0 0 10px rgba(52,152,219,0); }
+      100%{ box-shadow: 0 0 0 0 rgba(52,152,219,0); }
+    }
+
+    .footer{
+      text-align:center;
+      padding: 24px 0 8px;
+      color: #6c757d;
+      font-size: .92rem;
+      margin-top: 22px;
+      border-top: 1px solid #eaeaea;
+    }
+
+    @media print{
+      .print-btn, .no-print { display:none !important; }
+      body{ background:#fff; padding-bottom:0; }
+      .card{ box-shadow:none; border:1px solid #eee; }
+      .header{ border-radius:0; }
+      a[href]::after { content: " (" attr(href) ")"; font-size: 0.8em; color: #666; }
+    }
+  </style>
+
+  <!-- =========================================================
+       JSON-LD (FAQ Schema) - SEO friendly
+  ========================================================== -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How is TU/IOE M.Sc. percentage calculated?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The final percentage is a credit-weighted aggregate: Total Percentage = Σ(Credit × Marks Obtained) / Σ(Credits). Higher-credit subjects affect the total more."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does the calculator include thesis marks?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Add a row named 'Thesis' and enter its credit hours and marks. The thesis is treated like a course in the credit-weighted formula."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What division will I get for 75% to 80%?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Many documents list Distinction at 80% and above. This site treats 65% to below 80% as First Division , so 75% to 79.99% is First Division. Always confirm with your department for official classification."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is my data saved or sent to a server?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. The calculator runs fully in your browser using JavaScript. Your marks and credits are not transmitted to any server by default."
+        }
+      }
+    ]
+  }
+  </script>
+</head>
+
+<body>
+  <!-- =========================================================
+       HEADER
+  ========================================================== -->
+  <div class="header">
+    <div class="container position-relative">
+      <div class="row align-items-center">
+        <div class="col-lg-8">
+          <h1 class="mb-1"><i class="fas fa-graduation-cap me-2"></i>TU / IOE M.Sc. Percentage Calculator</h1>
+          <p class="lead mb-0">Credit-weighted aggregate (%) + division with real-time updates and full breakdown.</p>
+        </div>
+        <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
+          <div class="bg-white text-dark d-inline-block p-3 rounded shadow-sm pulse">
+            <div class="small muted">Total credits required</div>
+            <div class="h3 mb-0" id="requiredCreditsBadge">60</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <main class="container py-2">
+    <!-- =========================================================
+         INTRO / ABOUT BOX
+    ========================================================== -->
+    <div class="highlight-box">
+      <h5 class="mb-2"><i class="fas fa-circle-info me-2"></i>About this calculator</h5>
+      <p class="mb-2">
+        This tool helps you estimate your <strong>M.Sc. final percentage</strong> using the standard
+        <strong>credit-weighted formula</strong>:
+        <span class="pill"><strong>Σ(credit × marks)</strong> / <strong>Σ(credits)</strong></span>
+        which is commonly used for academic aggregate calculations.
+      </p>
+      <p class="mb-0">
+        Reference document: <strong>Tribhuvan University (TU) – Institute of Engineering (IOE) – Master Programs Guidelines (Academic Administration)</strong>.
+        <a href="https://portal.tu.edu.np/downloads/2025_08_18_15_29_54.pdf" target="_blank" rel="noopener">Open PDF</a>
+      </p>
+      <p class="mb-0 muted mt-2">
+        All calculations run in your browser (client-side). No marks/credits are sent to any server.
+      </p>
+    </div>
+
+    <div class="row g-3">
+      <!-- =========================================================
+           LEFT: INPUTS
+      ========================================================== -->
+      <div class="col-lg-6">
+        <div class="card">
+          <div class="card-header">
+            <i class="fas fa-user-pen calculator-icon"></i>
+            <span>Student & Program Details</span>
+          </div>
+          <div class="card-body">
+            <form id="mscForm" autocomplete="off">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label">Student Name (optional)</label>
+                  <input type="text" class="form-control" id="studentName" placeholder="e.g., Suman Karki"/>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Roll / Reg No. (optional)</label>
+                  <input type="text" class="form-control" id="studentId" placeholder="e.g., MSC-2025-123"/>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Program</label>
+                  <input type="text" class="form-control" id="programName" value="M.Sc."/>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Total Credits Required</label>
+                  <input type="number" min="1" class="form-control" id="requiredCredits" value="60"/>
+                </div>
+              </div>
+
+              <h5 class="section-title">Courses & Thesis</h5>
+
+              <div class="d-flex gap-2 flex-wrap mb-3 no-print">
+                <button type="button" class="btn btn-accent text-white" id="addRowBtn">
+                  <i class="fas fa-plus me-2"></i>Add Row
+                </button>
+                <button type="button" class="btn btn-outline-secondary" id="addPresetBtn">
+                  <i class="fas fa-wand-magic-sparkles me-2"></i>Add Preset (11×4cr + Thesis)
+                </button>
+                <button type="button" class="btn btn-outline-danger" id="resetBtn">
+                  <i class="fas fa-rotate-left me-2"></i>Reset
+                </button>
+              </div>
+
+              <div class="table-responsive">
+                <table class="table align-middle table-hover" id="marksTable">
+                  <thead>
+                    <tr>
+                      <th style="min-width:170px;">Course / Thesis</th>
+                      <th style="width:120px;">Credits</th>
+                      <th style="width:150px;">Marks (%)</th>
+                      <th class="text-end" style="width:70px;" title="Remove row">✕</th>
+                    </tr>
+                  </thead>
+                  <tbody id="marksTbody"></tbody>
+                </table>
+              </div>
+
+              <div class="alert alert-warning mt-3 mb-0">
+                <i class="fas fa-triangle-exclamation me-2"></i>
+                If your handbook shows a missing range (like 75–80), this calculator applies the common classification:
+                <strong>65% to below 80% = First Division</strong>. Always verify official division rules with your department.
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- =========================================================
+           RIGHT: RESULTS + RULES
+      ========================================================== -->
+      <div class="col-lg-6">
+        <div id="resultsArea">
+          <div class="card result-card">
+            <div class="card-header">
+              <i class="fas fa-chart-line calculator-icon"></i>
+              <span>Results (Live)</span>
+            </div>
+            <div class="card-body">
+              <div class="alert alert-info mb-0">
+                <i class="fas fa-lightbulb me-2"></i>
+                Enter marks and credits to see your weighted percentage and division.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card mt-3">
+          <div class="card-header">
+            <i class="fas fa-award calculator-icon"></i>
+            <span>Division / Classification</span>
+          </div>
+          <div class="card-body">
+            <div class="row g-2">
+              <div class="col-md-4">
+                <div class="mini-card">
+                  <div class="pill dist mb-2"><i class="fas fa-star"></i> Distinction</div>
+                  <div class="fw-semibold">80% and above</div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="mini-card">
+                  <div class="pill first mb-2"><i class="fas fa-medal"></i> First</div>
+                  <div class="fw-semibold">65% to below 80%</div>
+                  
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="mini-card">
+                  <div class="pill second mb-2"><i class="fas fa-certificate"></i> Second</div>
+                  <div class="fw-semibold">50% to below 65%</div>
+                </div>
+              </div>
+            </div>
+
+            <hr/>
+            <div class="small muted">
+              Formula used: <strong>Σ(Credit × Marks)</strong> divided by <strong>Σ(Credits)</strong>.
+              Courses with higher credits affect the total more.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- =========================================================
+         SEO FRIENDLY INFORMATION SECTIONS
+    ========================================================== -->
+    <section class="card mt-3" id="about-tu-ioe">
+      <div class="card-header">
+        <i class="fas fa-circle-info calculator-icon"></i>
+        <span>Reference & Academic Context (TU / IOE)</span>
+      </div>
+      <div class="card-body">
+        <p>
+          This M.Sc. percentage calculator is created for students who want to understand how
+          <strong>credit hours</strong> and <strong>marks obtained</strong> combine to produce a final weighted aggregate.
+          It is especially helpful for programs that follow a structured credit system (e.g., coursework + thesis)
+          where the total requirement may be <strong>60 credits</strong>.
+        </p>
+
+        <div class="highlight-box mb-3">
+          <h6 class="mb-2"><i class="fas fa-file-pdf me-2"></i>Official PDF Reference</h6>
+          <p class="mb-2">
+            Tribhuvan University (TU) — Institute of Engineering (IOE) — Master Programs Guidelines (Academic Administration)
+          </p>
+          <p class="mb-0">
+            PDF link:
+            <a href="https://portal.tu.edu.np/downloads/2025_08_18_15_29_54.pdf" target="_blank" rel="noopener">
+              https://portal.tu.edu.np/downloads/2025_08_18_15_29_54.pdf
+            </a>
+          </p>
+        </div>
+
+        <p class="mb-0 muted">
+          Disclaimer: This tool provides an estimate for learning/planning purposes. The official transcript,
+          division, and degree award decision depends on your campus/program rules and examination office.
+        </p>
+      </div>
+    </section>
+
+    <section class="card" id="how-to-use">
+      <div class="card-header">
+        <i class="fas fa-list-check calculator-icon"></i>
+        <span>How to Use the Calculator</span>
+      </div>
+      <div class="card-body">
+        <ul class="mb-3">
+          <li><strong>Add all subjects</strong> you completed (coursework + thesis if applicable).</li>
+          <li>Enter <strong>credit hours</strong> for each subject (default is 4, you can change it anytime).</li>
+          <li>Enter <strong>marks obtained (%)</strong> for each subject.</li>
+          <li>The calculator updates instantly and shows: percentage, division, totals, and per-subject contribution.</li>
+        </ul>
+
+        <p class="mb-0">
+          Why credit matters: if one subject is 6 credits and another is 2 credits, the 6-credit subject carries
+          more weight in the final percentage.
+        </p>
+      </div>
+    </section>
+
+    <section class="card" id="calculation-details">
+      <div class="card-header">
+        <i class="fas fa-square-root-variable calculator-icon"></i>
+        <span>Calculation Details (Explained Clearly)</span>
+      </div>
+      <div class="card-body">
+        <p class="mb-2">
+          The calculation used is the standard weighted aggregate:
+        </p>
+
+        <div class="mini-card mb-3">
+          <div class="fw-semibold mb-1">Total Percentage</div>
+          <div class="h5 mb-0">
+            = Σ(Credit × Marks Obtained) / Σ(Credits)
+          </div>
+        </div>
+
+        <p class="mb-2">
+          Example (simple):
+        </p>
+        <div class="table-responsive mb-3">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Subject</th>
+                <th>Credits</th>
+                <th>Marks</th>
+                <th>Credit × Marks</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Course A</td><td>4</td><td>80</td><td>320</td></tr>
+              <tr><td>Course B</td><td>3</td><td>70</td><td>210</td></tr>
+              <tr><td>Thesis</td><td>6</td><td>75</td><td>450</td></tr>
+              <tr class="table-active fw-bold"><td colspan="3">Totals</td><td>980</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p class="mb-0">
+          Final percentage = 980 ÷ (4 + 3 + 6) = 980 ÷ 13 = <strong>75.38%</strong>
+        </p>
+      </div>
+    </section>
+
+    <section class="card" id="faq">
+      <div class="card-header">
+        <i class="fas fa-circle-question calculator-icon"></i>
+        <span>FAQ (Common Questions)</span>
+      </div>
+      <div class="card-body">
+        <div class="accordion" id="mscFaq">
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="q1">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#a1">
+                Can I calculate only some subjects now and update later?
+              </button>
+            </h2>
+            <div id="a1" class="accordion-collapse collapse show" data-bs-parent="#mscFaq">
+              <div class="accordion-body">
+                Yes. You can enter marks for completed subjects first and add remaining subjects later.
+                The calculator updates instantly as you type.
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="q2">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#a2">
+                How should I enter thesis information?
+              </button>
+            </h2>
+            <div id="a2" class="accordion-collapse collapse" data-bs-parent="#mscFaq">
+              <div class="accordion-body">
+                Add a row named <strong>Thesis</strong>, enter thesis credit hours and marks.
+                The thesis will automatically be included in weighted percentage.
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="q3">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#a3">
+                Is my data stored anywhere?
+              </button>
+            </h2>
+            <div id="a3" class="accordion-collapse collapse" data-bs-parent="#mscFaq">
+              <div class="accordion-body">
+                No. This is a browser-based calculator. Your marks and credits remain on your device unless you
+                manually copy/share them.
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="q4">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#a4">
+                What is the division for 75%–80%?
+              </button>
+            </h2>
+            <div id="a4" class="accordion-collapse collapse" data-bs-parent="#mscFaq">
+              <div class="accordion-body">
+                Distinction is commonly <strong>80% and above</strong>. This site treats <strong>65% to below 80%</strong>
+                as <strong>First Division</strong>, so 75%–79.99% becomes First Division. If your program uses a different
+                range, you can easily change the ranges in the JavaScript.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <hr/>
+        <p class="mb-0 muted">
+          Search topics: TU M.Sc. percentage calculator, IOE weighted aggregate percentage, Tribhuvan University credits and marks,
+          M.Sc. thesis credit calculation, TU IOE Master guideline.
+        </p>
+      </div>
+    </section>
+
+    <div class="footer">
+      <div class="container">
+        <p class="mb-1">
+          This calculator is for educational and planning use. For official evaluation, consult your department/campus and TU exam section.
+        </p>
+        <p class="mb-0">© 2026 TU/IOE M.Sc. Percentage Calculator</p>
+      </div>
+    </div>
+  </main>
+
+  <button id="printBtn" class="print-btn no-print" title="Print">
+    <i class="fas fa-print"></i>
+  </button>
+
+  <!-- Bootstrap bundle (accordion/collapse) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    // -----------------------------
+    // Helpers
+    // -----------------------------
+    const fmt = (n, d=2) => {
+      if (!isFinite(n)) return "0.00";
+      return Number(n).toLocaleString(undefined, { minimumFractionDigits:d, maximumFractionDigits:d });
+    };
+
+    function clamp(num, min, max){
+      num = Number(num);
+      if (!isFinite(num)) return min;
+      return Math.min(Math.max(num, min), max);
+    }
+
+    // Division logic (common practice)
+    function getDivision(pct){
+      if (!isFinite(pct)) return { label: "—", cls: "none", icon: "fa-circle-xmark", desc: "Enter marks to calculate." };
+      if (pct >= 80) return { label: "Distinction", cls: "dist", icon: "fa-star", desc: "80% and above" };
+      if (pct >= 65) return { label: "First Division", cls: "first", icon: "fa-medal", desc: "65% to below 80%" };
+      if (pct >= 50) return { label: "Second Division", cls: "second", icon: "fa-certificate", desc: "50% to below 65%" };
+      return { label: "Below Second", cls: "none", icon: "fa-circle-xmark", desc: "Below 50%" };
+    }
+
+    // -----------------------------
+    // DOM
+    // -----------------------------
+    const marksTbody = document.getElementById("marksTbody");
+    const resultsArea = document.getElementById("resultsArea");
+    const addRowBtn = document.getElementById("addRowBtn");
+    const addPresetBtn = document.getElementById("addPresetBtn");
+    const resetBtn = document.getElementById("resetBtn");
+    const printBtn = document.getElementById("printBtn");
+
+    const requiredCreditsInput = document.getElementById("requiredCredits");
+    const requiredCreditsBadge = document.getElementById("requiredCreditsBadge");
+
+    // -----------------------------
+    // Row template
+    // -----------------------------
+    let rowId = 0;
+
+    function escapeHtml(str){
+      return String(str)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+    }
+
+    function makeRow({ title="Course", credits=4, marks="" } = {}){
+      rowId += 1;
+      const tr = document.createElement("tr");
+      tr.dataset.rowId = String(rowId);
+
+      tr.innerHTML = `
+        <td>
+          <input type="text" class="form-control form-control-sm title-input" value="${escapeHtml(title)}" placeholder="e.g., Advanced Algorithms"/>
+        </td>
+        <td>
+          <input type="number" min="0" step="0.5" class="form-control form-control-sm credit-input" value="${credits}" />
+          <div class="small muted mt-1">default: 4</div>
+        </td>
+        <td>
+          <div class="input-group input-group-sm">
+            <span class="input-group-text">%</span>
+            <input type="number" min="0" max="100" step="0.01" class="form-control mark-input" value="${marks}" placeholder="0 - 100"/>
+          </div>
+        </td>
+        <td class="text-end">
+          <button type="button" class="btn btn-sm btn-outline-danger remove-btn" title="Remove">
+            <i class="fas fa-xmark"></i>
+          </button>
+        </td>
+      `;
+
+      tr.querySelectorAll("input").forEach(inp => {
+        inp.addEventListener("input", calculateLive);
+      });
+
+      tr.querySelector(".remove-btn").addEventListener("click", () => {
+        tr.remove();
+        calculateLive();
+      });
+
+      return tr;
+    }
+
+    // -----------------------------
+    // Core calculation
+    // -----------------------------
+    function readRows(){
+      const rows = [];
+      marksTbody.querySelectorAll("tr").forEach(tr => {
+        const title = tr.querySelector(".title-input").value.trim() || "Course";
+        const credits = Number(tr.querySelector(".credit-input").value);
+        const marks = Number(tr.querySelector(".mark-input").value);
+
+        rows.push({
+          title,
+          credits: isFinite(credits) ? credits : 0,
+          marks: isFinite(marks) ? marks : NaN
+        });
+      });
+      return rows;
+    }
+
+    function calculateLive(){
+      const requiredCredits = Math.max(1, Number(requiredCreditsInput.value) || 60);
+      requiredCreditsBadge.textContent = requiredCredits.toString();
+
+      const rows = readRows();
+
+      let totalCredits = 0;
+      let weightedSum = 0;
+      let countedCredits = 0;
+
+      const breakdown = rows.map(r => {
+        const c = Math.max(0, Number(r.credits) || 0);
+        const mRaw = r.marks;
+        const m = isFinite(mRaw) ? clamp(mRaw, 0, 100) : NaN;
+
+        totalCredits += c;
+
+        let cxm = 0;
+        let included = false;
+
+        // Include row if marks is entered
+        if (isFinite(m) && c > 0){
+          cxm = c * m;
+          weightedSum += cxm;
+          countedCredits += c;
+          included = true;
+        }
+
+        return { ...r, credits: c, marks: mRaw, marksClamped: isFinite(m) ? m : NaN, cxm, included };
+      });
+
+      // Show live % even if partially filled (based on countedCredits)
+      const pct = countedCredits > 0 ? (weightedSum / countedCredits) : NaN;
+
+      // Completion vs required
+      const completionPct = requiredCredits > 0 ? (totalCredits / requiredCredits) * 100 : 0;
+      const completionClamped = clamp(completionPct, 0, 120);
+
+      const div = getDivision(pct);
+
+      renderResults({
+        studentName: document.getElementById("studentName").value.trim(),
+        studentId: document.getElementById("studentId").value.trim(),
+        programName: document.getElementById("programName").value.trim() || "M.Sc.",
+        requiredCredits,
+        totalCredits,
+        countedCredits,
+        weightedSum,
+        pct,
+        completionPct,
+        completionClamped,
+        division: div,
+        breakdown
+      });
+    }
+
+    function renderResults(res){
+      const pctStr = isFinite(res.pct) ? `${fmt(res.pct, 2)}%` : "—";
+      const missingCredits = Math.max(0, res.requiredCredits - res.totalCredits);
+      const creditsStatus = (res.totalCredits >= res.requiredCredits)
+        ? `<span class="pill dist"><i class="fas fa-check"></i> Credits complete</span>`
+        : `<span class="pill second"><i class="fas fa-hourglass-half"></i> ${fmt(missingCredits,0)} credits remaining</span>`;
+
+      const divPill = `<span class="pill ${res.division.cls}">
+        <i class="fas ${res.division.icon}"></i> ${res.division.label}
+      </span>`;
+
+      const infoLine = [
+        res.studentName && `<strong>${escapeHtml(res.studentName)}</strong>`,
+        res.studentId && `<span class="muted">(${escapeHtml(res.studentId)})</span>`,
+        res.programName && `<span class="muted">• ${escapeHtml(res.programName)}</span>`
+      ].filter(Boolean).join(" ");
+
+      resultsArea.innerHTML = `
+        <div class="card result-card">
+          <div class="card-header">
+            <i class="fas fa-chart-line calculator-icon"></i>
+            <span>Results (Live)</span>
+          </div>
+          <div class="card-body">
+
+            <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+              <div>
+                <div class="small muted">Student</div>
+                <div class="fw-semibold">${infoLine || `<span class="muted">—</span>`}</div>
+              </div>
+              <div class="text-end">
+                <div class="small muted">Division</div>
+                ${divPill}
+              </div>
+            </div>
+
+            <div class="mt-3 p-3 rounded" style="background: linear-gradient(135deg, #e3f2fd, #bbdefb);">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <div class="small muted">Weighted Percentage</div>
+                  <div class="h2 mb-0 text-primary">${pctStr}</div>
+                </div>
+                <div class="col-md-6">
+                  <div class="small muted">Credits Progress</div>
+                  <div class="d-flex align-items-center gap-2 flex-wrap">
+                    <div class="pill"><i class="fas fa-book"></i> Total: <strong>${fmt(res.totalCredits,0)}</strong> / ${fmt(res.requiredCredits,0)}</div>
+                    ${creditsStatus}
+                  </div>
+                </div>
+              </div>
+
+              <div class="progress-container">
+                <div class="progress-bar-custom" style="width:${res.completionClamped}%"></div>
+              </div>
+              <div class="d-flex justify-content-between small muted">
+                <span>0%</span>
+                <span>${fmt(res.completionPct,1)}%</span>
+                <span>100%</span>
+              </div>
+            </div>
+
+            <div class="row g-3 mt-2">
+              <div class="col-md-4">
+                <div class="mini-card text-center">
+                  <div class="small muted">Σ(credit × marks)</div>
+                  <div class="fw-bold">${fmt(res.weightedSum, 2)}</div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="mini-card text-center">
+                  <div class="small muted">Credits with marks</div>
+                  <div class="fw-bold">${fmt(res.countedCredits, 0)}</div>
+                  <div class="small muted">used for %</div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="mini-card text-center">
+                  <div class="small muted">Rule</div>
+                  <div class="fw-bold">${escapeHtml(res.division.desc)}</div>
+                </div>
+              </div>
+            </div>
+
+            <h5 class="section-title">Course Breakdown</h5>
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>Course</th>
+                    <th>Credits</th>
+                    <th>Marks</th>
+                    <th>Credit × Marks</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${res.breakdown.map(b => {
+                    const marksCell = isFinite(b.marksClamped)
+                      ? `${fmt(b.marksClamped,2)}%`
+                      : `<span class="muted">—</span>`;
+
+                    const cxmCell = (b.included)
+                      ? fmt(b.cxm, 2)
+                      : `<span class="muted">—</span>`;
+
+                    const status = b.included
+                      ? `<span class="pill first"><i class="fas fa-check"></i> Included</span>`
+                      : `<span class="pill none"><i class="fas fa-pen"></i> Enter marks</span>`;
+
+                    return `
+                      <tr>
+                        <td>${escapeHtml(b.title)}</td>
+                        <td>${fmt(b.credits,0)}</td>
+                        <td>${marksCell}</td>
+                        <td>${cxmCell}</td>
+                        <td>${status}</td>
+                      </tr>
+                    `;
+                  }).join("")}
+                </tbody>
+              </table>
+            </div>
+
+            <div class="alert alert-info mb-0">
+              <i class="fas fa-info-circle me-2"></i>
+              Tip: Enter all subjects (including thesis) to match the official total credits. Then the estimate will closely match your final aggregate.
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // -----------------------------
+    // Actions
+    // -----------------------------
+    function addRow(data){
+      marksTbody.appendChild(makeRow(data));
+      calculateLive();
+    }
+
+    function resetAll(){
+      marksTbody.innerHTML = "";
+      rowId = 0;
+      // Default: 5 rows, each credit=4
+      addRow({ title:"Course 1", credits:4, marks:"" });
+      addRow({ title:"Course 2", credits:4, marks:"" });
+      addRow({ title:"Course 3", credits:4, marks:"" });
+      addRow({ title:"Course 4", credits:4, marks:"" });
+      addRow({ title:"Thesis", credits:4, marks:"" });
+      calculateLive();
+    }
+
+    function addPreset(){
+      // Typical example: 12×4cr = 48 + Thesis 12cr = 60
+      // Change thesis credits if your program differs.
+      marksTbody.innerHTML = "";
+      rowId = 0;
+
+      for (let i=1;i<=11;i++){
+        addRow({ title:`Course ${i}`, credits:4, marks:"" });
+      }
+      addRow({ title:"Thesis", credits:16, marks:"" });
+
+      requiredCreditsInput.value = 60;
+      requiredCreditsBadge.textContent = "60";
+      calculateLive();
+    }
+
+    // -----------------------------
+    // Init
+    // -----------------------------
+    document.addEventListener("DOMContentLoaded", () => {
+      requiredCreditsBadge.textContent = String(Number(requiredCreditsInput.value) || 60);
+
+      addRowBtn.addEventListener("click", () =>
+        addRow({ title:`Course ${marksTbody.children.length+1}`, credits:4, marks:"" })
+      );
+      addPresetBtn.addEventListener("click", addPreset);
+      resetBtn.addEventListener("click", resetAll);
+
+      requiredCreditsInput.addEventListener("input", calculateLive);
+      printBtn.addEventListener("click", () => window.print());
+
+      resetAll();
+    });
+  </script>
+</body>
+</html>
