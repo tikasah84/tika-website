@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ne">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>साधारण ब्याज गणक</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: #f5f7fa;
+    }
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+      color: #333;
+    }
+    label {
+      display: block;
+      margin-top: 12px;
+      font-weight: bold;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 6px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 12px;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 18px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    table {
+      width: 100%;
+      margin-top: 20px;
+      border-collapse: collapse;
+    }
+    table, th, td {
+      border: 1px solid #ccc;
+    }
+    th, td {
+      padding: 12px;
+      text-align: center;
+    }
+    th {
+      background: #f0f0f0;
+    }
+    .result-box {
+      margin-top: 20px;
+      padding: 15px;
+      background: #e8f5e9;
+      border: 1px solid #c8e6c9;
+      border-radius: 8px;
+    }
+    @media (max-width: 600px) {
+      body { padding: 10px; }
+      .container { padding: 15px; }
+      table, th, td { font-size: 14px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>साधारण ब्याज गणक</h2>
+    <label>मूलधन (रु)</label>
+    <input type="number" id="principal" placeholder="मूलधन लेख्नुहोस्" required>
+
+    <label>समय (वर्ष)</label>
+    <input type="number" id="years" placeholder="वर्ष">
+
+    <label>समय (महिना)</label>
+    <input type="number" id="months" placeholder="महिना">
+
+    <label>समय (दिन)</label>
+    <input type="number" id="days" placeholder="दिन">
+
+    <label>ब्याज दर (रु)</label>
+    <input type="number" id="rate" placeholder="जस्तै: ३ रु " required>
+
+    <button onclick="calculateInterest()">गणना गर्नुहोस्</button>
+
+    <div id="output"></div>
+  </div>
+
+  <script>
+    function calculateInterest() {
+      let principal = parseFloat(document.getElementById("principal").value) || 0;
+      let years = parseInt(document.getElementById("years").value) || 0;
+      let months = parseInt(document.getElementById("months").value) || 0;
+      let days = parseInt(document.getElementById("days").value) || 0;
+      let ratePerMonth = parseFloat(document.getElementById("rate").value) || 0;
+
+      // कुल महिनामा रूपान्तरण (३० दिन = १ महिना)
+      let totalMonths = (years * 12) + months + (days / 30);
+
+      // ब्याज गणना
+      let interest = (principal * ratePerMonth * totalMonths) / 100;
+      let totalAmount = principal + interest;
+
+      // वार्षिक, मासिक, दैनिक ब्याज
+      let yearlyRate = ratePerMonth * 12;
+      let yearlyInterest = (principal * yearlyRate * years) / 100;
+
+      let monthlyInterest = (principal * ratePerMonth * months) / 100;
+      let dailyInterest = (principal * (ratePerMonth/30) * days) / 100;
+
+      document.getElementById("output").innerHTML = `
+        <div class="result-box">
+          <h3>नतिजा सारांश</h3>
+          <table>
+            <tr>
+              <th>समय</th>
+              <th>ब्याज (रु)</th>
+              <th>जम्मा (रु)</th>
+            </tr>
+            <tr>
+              <td>वर्ष (${years})</td>
+              <td>${yearlyInterest.toFixed(2)}</td>
+              <td>${(principal + yearlyInterest).toFixed(2)}</td>
+            </tr>
+            <tr>
+              <td>महिना (${months})</td>
+              <td>${monthlyInterest.toFixed(2)}</td>
+              <td>${(principal + monthlyInterest).toFixed(2)}</td>
+            </tr>
+            <tr>
+              <td>दिन (${days})</td>
+              <td>${dailyInterest.toFixed(2)}</td>
+              <td>${(principal + dailyInterest).toFixed(2)}</td>
+            </tr>
+            <tr style="font-weight:bold;background:#f9f9f9;">
+              <td>कुल</td>
+              <td>${interest.toFixed(2)}</td>
+              <td>${totalAmount.toFixed(2)}</td>
+            </tr>
+          </table>
+        </div>
+      `;
+      window.scrollTo({
+        top: document.body.scrollHeight,
+        behavior: "smooth"
+      });
+      
+    }
+  </script>
+</body>
+</html>
