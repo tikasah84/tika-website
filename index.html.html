@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Tika Sah — Python Developer</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Tika Sah — Python/Django backend developer. Interactive desktop portfolio.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--t:#1d1d1f;--mute:#6e6e73;--win:rgba(246,246,248,.9);--side:rgba(230,230,235,.65);--line:rgba(0,0,0,.1);--a:#007aff;--tl-off:#cfcfd2;--menu:rgba(255,255,255,.2);
+--s:'Instrument Serif',Georgia,serif;--u:-apple-system,BlinkMacSystemFont,'Inter','Segoe UI',system-ui,sans-serif;--mono:ui-monospace,'SF Mono',Menlo,Consolas,monospace;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--t:#f5f5f7;--mute:#a1a1a6;--win:rgba(38,38,42,.9);--side:rgba(28,28,32,.6);--line:rgba(255,255,255,.12);--a:#0a84ff;--tl-off:#4a4a4e}}
+:root[data-theme="dark"]{--t:#f5f5f7;--mute:#a1a1a6;--win:rgba(38,38,42,.9);--side:rgba(28,28,32,.6);--line:rgba(255,255,255,.12);--a:#0a84ff;--tl-off:#4a4a4e}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%;overflow:hidden}
+body{font-family:var(--u);font-size:13px;color:var(--t);background:#0d1220;user-select:none;-webkit-font-smoothing:antialiased}
+#wall{position:fixed;inset:0;transition:background .6s}
+#mb{position:fixed;top:env(safe-area-inset-top,0px);left:0;right:0;height:28px;display:flex;justify-content:space-between;align-items:center;padding:0 8px;background:rgba(15,15,25,.28);backdrop-filter:blur(28px) saturate(1.8);color:#fff;font-size:13px;font-weight:500;z-index:9000}
+#mb>span{display:flex;align-items:center;gap:2px}
+.mi{padding:2px 9px;border-radius:5px;cursor:default;display:flex;align-items:center;gap:6px;background:none;border:0;color:#fff;font:inherit}.mi:hover,.mi.o{background:rgba(255,255,255,.2)}.mi b{font-weight:700}
+.mi svg{width:15px;height:15px;fill:none;stroke:#fff;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.hd{}
+.dd{position:fixed;left:8px;top:calc(30px + env(safe-area-inset-top,0px));min-width:230px;padding:5px;background:var(--win);backdrop-filter:blur(30px) saturate(1.6);border:1px solid var(--line);border-radius:10px;box-shadow:0 12px 40px rgba(0,0,0,.4);z-index:9500;display:none;color:var(--t)}
+.dd.on{display:block;animation:fade .12s}
+.dd div{padding:4px 12px;border-radius:5px;cursor:default;display:flex;justify-content:space-between;gap:20px}.dd div:hover{background:var(--a);color:#fff}.dd hr{border:0;border-top:1px solid var(--line);margin:5px 8px}
+@keyframes fade{from{opacity:0}}
+.wgt{position:fixed;right:20px;top:46px;display:grid;gap:12px;width:210px;z-index:1}
+.g{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);backdrop-filter:blur(24px) saturate(1.6);border-radius:22px;padding:14px 16px;color:#fff;animation:up .8s both}
+.g:nth-child(2){animation-delay:.12s}.g:nth-child(3){animation-delay:.24s}
+@keyframes up{from{opacity:0;transform:translateY(14px)}}
+.g small{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;opacity:.7}
+.g .big{font-family:var(--s);font-size:44px;line-height:1.05}.g .sub{font-size:12px;opacity:.8}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#30d158;margin-right:6px;animation:pl 2s infinite}
+@keyframes pl{0%{box-shadow:0 0 0 0 rgba(48,209,88,.6)}70%,100%{box-shadow:0 0 0 8px transparent}}
+.nm{position:fixed;left:4vw;bottom:17vh;color:#fff;pointer-events:none;z-index:1;text-shadow:0 2px 30px rgba(0,0,0,.25)}
+.nm h1{font-family:var(--s);font-weight:400;font-size:clamp(54px,9vw,116px);line-height:.95;letter-spacing:-.02em}.nm h1 i{opacity:.65}
+.nm p{margin-top:10px;font-size:15px;opacity:.8}
+.win{position:absolute;display:none;flex-direction:column;width:min(640px,94vw);height:min(450px,68vh);min-width:320px;background:var(--win);backdrop-filter:blur(34px) saturate(1.6);border:1px solid var(--line);border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.25),0 0 0 .5px rgba(0,0,0,.35);overflow:hidden;z-index:10;transition:box-shadow .2s}
+.win.act{box-shadow:0 28px 80px rgba(0,0,0,.5),0 0 0 .5px rgba(0,0,0,.4)}
+.win.on{display:flex;animation:pop .26s cubic-bezier(.2,.9,.3,1.15)}
+@keyframes pop{from{opacity:0;transform:scale(.94)}}
+.win.gone{animation:gone .38s cubic-bezier(.5,0,.8,.4) forwards}
+@keyframes gone{to{opacity:0;transform:scale(.08) translateY(30px)}}
+.win.max{left:0!important;top:28px!important;width:100%!important;height:calc(100% - 28px)!important;border-radius:0}
+.tb{height:40px;flex:none;display:flex;align-items:center;padding:0 13px;border-bottom:1px solid var(--line);cursor:default;position:relative}
+.tb h6{position:absolute;left:0;right:0;text-align:center;font-size:13px;font-weight:600;pointer-events:none;opacity:.55}.win.act .tb h6{opacity:.9}
+.tl{display:flex;gap:8px;z-index:1}
+.tl i{width:12px;height:12px;border-radius:50%;background:var(--tl-off);display:grid;place-items:center;font-style:normal;font-size:9px;font-weight:700;color:transparent;line-height:1;cursor:default}
+.win.act .tl i:nth-child(1){background:#ff5f57}.win.act .tl i:nth-child(2){background:#febc2e}.win.act .tl i:nth-child(3){background:#28c840}
+.tl:hover i{color:rgba(0,0,0,.55)}
+.bd{flex:1;overflow:auto;user-select:text;position:relative}
+.rz{position:absolute;right:0;bottom:0;width:18px;height:18px;cursor:nwse-resize;z-index:5}
+.pad{padding:24px 28px}
+h2{font-family:var(--s);font-weight:400;font-size:38px;line-height:1.05;margin-bottom:10px}
+h3{font-size:15px;font-weight:600}
+.m{color:var(--mute);font-size:13px}p{margin:8px 0;line-height:1.6}
+ul{padding-left:18px}li{margin:4px 0;color:var(--mute);line-height:1.55}
+.sec{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--a);font-weight:700;margin:22px 0 8px}
+.job{padding:14px 0;border-top:1px solid var(--line)}.job .r{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.chips span{font-size:12px;padding:3px 10px;border-radius:99px;background:color-mix(in srgb,var(--a) 14%,transparent);color:var(--a);font-weight:600}
+.fd{display:flex;height:100%}.sd{width:190px;flex:none;background:var(--side);border-right:1px solid var(--line);padding:12px 8px;overflow:auto}
+.sd small{display:block;font-size:11px;font-weight:700;color:var(--mute);padding:4px 10px}
+.sd div{padding:6px 10px;border-radius:6px;cursor:default;font-weight:500;display:flex;gap:8px;align-items:center}.sd div:hover{background:rgba(128,128,128,.14)}.sd div.sel{background:rgba(128,128,128,.25)}
+.sd svg{width:16px;height:16px;flex:none;fill:none;stroke:var(--a);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.mn{flex:1;overflow:auto;padding:24px 26px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.card{border:1px solid var(--line);border-radius:12px;padding:14px;background:rgba(128,128,128,.06)}
+.term{background:#13151c;color:#d7e0ff;font-family:var(--mono);font-size:12.5px;padding:12px 14px;min-height:100%;user-select:text}
+.term .o{white-space:pre-wrap;margin:2px 0}.term .p{color:#7ee787}.term input{background:none;border:0;outline:0;color:inherit;font:inherit;width:60%;user-select:text}
+.ct a{display:flex;justify-content:space-between;align-items:center;padding:14px 4px;border-bottom:1px solid var(--line);text-decoration:none;color:var(--t);font-weight:600;transition:padding .2s,color .2s}.ct a:hover{padding-left:12px;color:var(--a)}.ct a span{color:var(--mute);font-weight:400}
+.wp{width:100%;aspect-ratio:16/8;border-radius:12px;border:1px solid var(--line);margin-bottom:16px}
+.th{aspect-ratio:16/10;border-radius:9px;cursor:pointer;border:2px solid transparent;outline:1px solid var(--line);transition:transform .15s}.th:hover{transform:scale(1.05)}.th.sel{border-color:var(--a)}
+.thn{font-size:11px;text-align:center;margin-top:4px;color:var(--mute)}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:8px}
+.row input[type=color]{width:44px;height:30px;border:1px solid var(--line);border-radius:7px;background:none;padding:2px;cursor:pointer}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}.seg button{background:none;border:0;color:var(--t);font:inherit;padding:5px 14px;cursor:pointer;border-left:1px solid var(--line)}.seg button:first-child{border:0}.seg button:hover{background:rgba(128,128,128,.15)}
+#dock{position:fixed;left:50%;bottom:calc(8px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);display:flex;align-items:flex-end;gap:8px;padding:6px 10px;background:rgba(255,255,255,.2);backdrop-filter:blur(30px) saturate(1.8);border:1px solid rgba(255,255,255,.3);border-radius:24px;z-index:9000;animation:up .8s .3s both;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+.dk{--s:1;position:relative;width:calc(54px*var(--s));height:calc(54px*var(--s));border-radius:calc(12px*var(--s));display:grid;place-items:center;cursor:default;box-shadow:inset 0 1px 0 rgba(255,255,255,.4),inset 0 -1px 0 rgba(0,0,0,.15),0 3px 8px rgba(0,0,0,.3);transition:width .09s,height .09s}
+.dk svg{width:54%;height:54%;fill:none;stroke:#fff;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 1px 1px rgba(0,0,0,.25))}
+.dk::before{content:attr(data-n);position:absolute;bottom:calc(100% + 10px);background:rgba(40,40,46,.92);color:#fff;padding:3px 10px;border-radius:7px;font-size:12px;opacity:0;pointer-events:none;transition:opacity .12s;white-space:nowrap}.dk:hover::before{opacity:1}
+.dk.run::after{content:"";position:absolute;bottom:-5px;width:4px;height:4px;border-radius:50%;background:#fff;opacity:.9}
+.dk.bn{animation:bn .6s}@keyframes bn{30%{transform:translateY(-18px)}60%{transform:translateY(0)}80%{transform:translateY(-7px)}}
+.sep{width:1px;height:44px;background:rgba(255,255,255,.35);align-self:center}
+#ctx{position:fixed;display:none;min-width:200px;padding:5px;background:var(--win);backdrop-filter:blur(30px);border:1px solid var(--line);border-radius:10px;box-shadow:0 12px 40px rgba(0,0,0,.4);z-index:9600;color:var(--t)}
+#ctx.on{display:block}#ctx div{padding:4px 12px;border-radius:5px}#ctx div:hover{background:var(--a);color:#fff}#ctx hr{border:0;border-top:1px solid var(--line);margin:5px 8px}
+@media(max-width:760px){.wgt,.hd{display:none}.nm{bottom:22vh}.win{left:6px!important;right:6px;top:36px!important;width:auto;height:calc(100% - 130px)}.fd{flex-direction:column}.sd{width:auto;display:flex;overflow-x:auto;border-right:0;border-bottom:1px solid var(--line);padding:6px}.sd small{display:none}.sd div{white-space:nowrap}.rz{display:none}.dk{width:42px!important;height:42px!important}#dock{gap:6px;padding:5px 8px}.sep{height:32px}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div id="wall"></div>
+<div id="mb"><span><button class="mi" id="lg" aria-label="Menu"><svg viewBox="0 0 24 24" style="fill:#fff;stroke:none"><path d="M12 2 22 12 12 22 2 12z" opacity=".95"/><path d="M8.5 9h7M12 9v6.5" style="stroke:#222;stroke-width:2;fill:none;stroke-linecap:round"/></svg></button><span class="mi"><b id="app">About</b></span><span class="mi hd">File</span><span class="mi hd">Edit</span><span class="mi hd">View</span><span class="mi hd">Window</span><span class="mi hd">Help</span></span>
+<span><span class="mi hd"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="17" height="10" rx="2.5"/><path d="M21.5 10.5v3"/><path d="M5 10v4M8 10v4M11 10v4" /></svg></span><span class="mi hd"><svg viewBox="0 0 24 24"><path d="M2 9a14 14 0 0 1 20 0M5 12.5a9.5 9.5 0 0 1 14 0M8.5 16a4.5 4.5 0 0 1 7 0"/><circle cx="12" cy="19" r=".8"/></svg></span><span class="mi hd"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 5 5"/></svg></span><span class="mi" id="clk"></span></span></div>
+<div class="dd" id="dd"><div data-a="about">About This Portfolio</div><hr><div data-a="wallpaper">Wallpaper…</div><div data-a="theme">Toggle Appearance</div><hr><div data-a="contact">Contact Tika…</div></div>
+<div id="ctx"><div data-a="wallpaper">Change Wallpaper…</div><div data-a="theme">Toggle Appearance</div><hr><div data-a="about">About Tika</div></div>
+
+<div class="nm"><h1>Tika <i>Sah</i></h1><p>Python Developer · Backend &amp; Automation · Kathmandu, Nepal</p></div>
+<div class="wgt">
+ <div class="g"><small>Kathmandu</small><div class="big" id="wt">--:--</div><div class="sub" id="wd"></div></div>
+ <div class="g"><small>Status</small><div style="margin-top:6px;font-weight:600"><span class="dot"></span>Open to opportunities</div><div class="sub" style="margin-top:4px">M.Sc. student · TU, Nepal</div></div>
+ <div class="g"><small>Experience</small><div class="big"><span id="yrs">0</span>+ yrs</div><div class="sub">Django · Flask · Automation</div></div>
+</div>
+<div id="wins"></div>
+<div id="dock"></div>
+
+<script>
+const $=s=>document.querySelector(s);
+const chips=a=>`<div class="chips">${a.map(x=>`<span>${x}</span>`).join("")}</div>`;
+const IC={about:'<circle cx="12" cy="8" r="4"/><path d="M4 21c1-4.5 4.5-6 8-6s7 1.5 8 6"/>',experience:'<rect x="3" y="7" width="18" height="13" rx="2.5"/><path d="M9 7V5.5A1.5 1.5 0 0 1 10.5 4h3A1.5 1.5 0 0 1 15 5.5V7M3 13h18"/>',projects:'<path d="M3 7.5A2.5 2.5 0 0 1 5.5 5H10l2 2.5h6.5A2.5 2.5 0 0 1 21 10v7.5a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 17.5z"/>',skills:'<path d="m8 8-4 4 4 4M16 8l4 4-4 4M13.5 5l-3 14"/>',terminal:'<path d="m5 8 4 4-4 4M12 17h7"/>',contact:'<rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m3.5 7 8.5 6 8.5-6"/>',wallpaper:'<rect x="3" y="4" width="18" height="16" rx="2.5"/><circle cx="9" cy="10" r="1.8"/><path d="m4 18 5-5 4 4 3-3 4 4"/>',trash:'<path d="M5 7h14M10 7V5h4v2M7 7l1 12h8l1-12M10 11v5M14 11v5"/>'};
+const svg=k=>`<svg viewBox="0 0 24 24">${IC[k]}</svg>`;
+// wallpapers
+const mesh=c=>`radial-gradient(60% 55% at 18% 18%,${c[0]},transparent 70%),radial-gradient(55% 60% at 85% 80%,${c[1]},transparent 70%),radial-gradient(45% 45% at 75% 18%,${c[2]},transparent 70%),${c[3]}`;
+const WP=[["Midnight",["#2b4a8f","#5b3b8c","#1d6f8f","#0d1220"]],["Sonoma",["#ffb347","#d6457b","#6a3fb5","#1d1b4b"]],["Aurora",["#22d3a6","#3b82f6","#8b5cf6","#07131f"]],["Ember",["#ff7a45","#ff3d6e","#b0306a","#240c1a"]],["Forest",["#3fa56b","#1f7a73","#9bcf5a","#08201a"]],["Graphite",["#6b7280","#374151","#9ca3af","#0f1115"]],["Ocean",["#38bdf8","#2563eb","#06b6d4","#04162b"]],["Rose",["#fda4af","#c084fc","#fb7185","#2a1230"]]];
+let cur=0,custom=["#3b82f6","#ec4899","#22d3ee","#0b1020"];
+const setWP=(c,idx)=>{$("#wall").style.background=mesh(c);cur=idx;try{localStorage.setItem("tika-wp",JSON.stringify({idx,c}))}catch(e){}
+ const p=$("#wpv");p&&(p.style.background=mesh(c));document.querySelectorAll(".th").forEach((t,i)=>t.classList.toggle("sel",i===idx))};
+const wpHTML=`<div class="pad"><h2>Wallpaper</h2><div class="wp" id="wpv"></div>
+<div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(110px,1fr))">${WP.map((w,i)=>`<div><div class="th" data-i="${i}" style="background:${mesh(w[1])}"></div><div class="thn">${w[0]}</div></div>`).join("")}</div>
+<div class="sec">Custom colours</div><div class="row"><input type="color" id="c0" value="${custom[0]}"><input type="color" id="c1" value="${custom[1]}"><input type="color" id="c2" value="${custom[2]}"><input type="color" id="c3" value="${custom[3]}"><span class="m">Glow 1 · Glow 2 · Glow 3 · Base</span></div>
+<div class="sec">Appearance</div><div class="seg"><button data-m="light">Light</button><button data-m="dark">Dark</button><button data-m="auto">Auto</button></div></div>`;
+// projects
+const P=[["Commerce Network","Prime Vendor","EDI-enabled platform integrating clients, suppliers and customers. Optimizes high-volume transactions, automates data exchange and manages catalogs.",["Django","MySQL","GitLab CI/CD"]],
+["Catalog Management System","Prime Vendor","Automates client catalog uploads and inventory updates on DigitalOcean Spaces (S3), processing the latest uploads for real-time catalog updates.",["Django","S3","MySQL"]],
+["Hazardous Waste Management","Prime Vendor","EDI-based transaction system automating communication across clients and mapping EDI data into client-specific PDFs for regulatory paperwork.",["Django","EDI","MySQL"]],
+["Market Research Scrapers","Prime Vendor","Automated extraction of bid and product data for market research and competitor analysis across multiple platforms.",["Scrapy","Selenium","BeautifulSoup"]],
+["FoodBusters","Eydean","Backend for a multi-vendor mobile food ordering app: secure authentication, multiple payment gateways, optimized order processing.",["Flask","MongoDB","Docker","React"]],
+["BookGara","Eydean","Web app connecting customers to multiple services with a scalable Flask backend, API integrations and CI/CD automation.",["Flask","MongoDB","Docker","React"]]];
+const projHTML=`<div class="fd"><div class="sd"><small>Projects</small>${P.map((p,i)=>`<div data-i="${i}" class="${i?"":"sel"}">${svg("projects")}${p[0]}</div>`).join("")}</div><div class="mn" id="pd"></div></div>`;
+const showP=i=>{const p=P[i];$("#pd").innerHTML=`<h2>${p[0]}</h2><div class="m">${p[1]}</div><p style="margin-top:14px">${p[2]}</p>${chips(p[3])}`};
+const APPS={
+about:{n:"About",c:"linear-gradient(145deg,#4da3ff,#0a5fd8)",h:`<div class="pad"><h2>Hello, I'm Tika.</h2><p>Python developer focused on scalable backend systems and automated business workflows. I build Django and Flask applications, cloud-based catalog and inventory systems, EDI integrations and web scraping tools that deliver clean, structured data.</p>
+<div class="sec">Highlights</div><ul><li>Automated catalog pipelines on DigitalOcean Spaces (S3) with GitLab CI/CD and Docker</li><li>EDI-enabled platforms for client, supplier and customer integration</li><li>Payment gateway and REST API integrations</li></ul>
+<div class="sec">Education</div><div class="job" style="border:0;padding-top:0"><h3>M.Sc. Informatics &amp; Intelligent Systems Engineering</h3><div class="m">Thapathali Engineering Campus, TU · 2023 – 2026</div></div><div class="job"><h3>B.E. Computer Engineering</h3><div class="m">Eastern Region Campus, Dharan, TU · 2017 – 2022</div></div></div>`},
+experience:{n:"Experience",c:"linear-gradient(145deg,#a070ff,#5b2fd0)",h:`<div class="pad"><h2>Experience</h2>
+<div class="job" style="border:0"><div class="r"><h3>Python/Django Developer</h3><span class="m">Feb 2023 – Present</span></div><div class="m">Prime Vendor Pvt. Ltd · Kathmandu</div><ul><li>Developed Django web apps and Python automation scripts.</li><li>Built EDI-enabled systems for automated data exchange and document generation.</li><li>Integrated DigitalOcean Spaces (S3) for file storage and catalog management.</li><li>Created Selenium, BeautifulSoup and Scrapy tools for market and bid data.</li><li>Automated deployment with GitLab CI/CD.</li></ul></div>
+<div class="job"><div class="r"><h3>Junior Backend Developer</h3><span class="m">Jun 2022 – Jan 2023</span></div><div class="m">Eydean Inc. · Kathmandu</div><ul><li>Created and maintained RESTful APIs.</li><li>Built data handling systems and third-party payment integrations.</li><li>Collaborated with the React frontend team.</li></ul></div></div>`},
+projects:{n:"Projects",c:"linear-gradient(145deg,#ffb04d,#f06a00)",h:projHTML,w:720},
+skills:{n:"Skills",c:"linear-gradient(145deg,#3ddc97,#0f9d63)",h:`<div class="pad"><h2>Skills</h2><div class="grid">${[["Languages",["Python","JavaScript","PHP","C","C++"]],["Frameworks",["Django","Flask","Node.js","React"]],["Databases",["MySQL","PostgreSQL","MongoDB"]],["Infrastructure",["Docker","DigitalOcean","S3","GitLab CI/CD","Git"]],["Data",["Scrapy","BeautifulSoup","Selenium"]],["Integration",["EDI","REST APIs","Payments"]]].map(s=>`<div class="card"><h3>${s[0]}</h3>${chips(s[1])}</div>`).join("")}</div></div>`},
+terminal:{n:"Terminal",c:"linear-gradient(145deg,#4a4d58,#16171c)",h:`<div class="term" id="tm"><div class="o">Tika OS 2.0 — type <b>help</b> to begin.</div><div><span class="p">tika@portfolio ~ %</span> <input id="ti" autocomplete="off" spellcheck="false"></div></div>`},
+contact:{n:"Contact",c:"linear-gradient(145deg,#ff6b88,#e0173f)",h:`<div class="pad ct"><h2>Get in touch</h2><p class="m">Open to backend and automation roles. Let's talk.</p><div style="margin-top:14px"><a href="mailto:tikasah84@gmail.com">Email<span>tikasah84@gmail.com</span></a><a href="tel:+9779815809465">Phone<span>+977-9815809465</span></a><a href="https://github.com/tikasah84" target="_blank" rel="noopener">GitHub<span>github.com/tikasah84</span></a><a href="https://tikasah84.com.np" target="_blank" rel="noopener">Website<span>tikasah84.com.np</span></a></div></div>`},
+wallpaper:{n:"Wallpaper",c:"linear-gradient(145deg,#6f7787,#3a3f4b)",h:wpHTML,w:600}
+};
+const CMD={help:"Commands: about, skills, experience, projects, contact, whoami, date, clear",whoami:"tika sah — python developer, kathmandu",about:"Python developer building scalable backends, EDI integrations and automation pipelines.",skills:"Python · Django · Flask · Docker · DigitalOcean S3 · GitLab CI/CD · MySQL · PostgreSQL · MongoDB · Scrapy · Selenium",experience:"Prime Vendor Pvt. Ltd (2023–now) · Eydean Inc. (2022–2023)",projects:P.map(p=>"• "+p[0]).join("\n"),contact:"tikasah84@gmail.com · +977-9815809465 · github.com/tikasah84"};
+let z=20,k=0;const wins=$("#wins"),dock=$("#dock");
+Object.entries(APPS).forEach(([id,a])=>{
+ if(id==="wallpaper")dock.insertAdjacentHTML("beforeend",'<div class="sep"></div>');
+ dock.insertAdjacentHTML("beforeend",`<div class="dk" data-id="${id}" data-n="${a.n}" style="background:${a.c}">${svg(id)}</div>`);
+ const w=document.createElement("div");w.className="win";w.id="w-"+id;w.style.left=(110+k*34)+"px";w.style.top=(60+k*28)+"px";if(a.w)w.style.width=Math.min(a.w,innerWidth*.94)+"px";k++;
+ w.innerHTML=`<div class="tb"><div class="tl"><i data-x="c">×</i><i data-x="m">−</i><i data-x="z">+</i></div><h6>${a.n}</h6></div><div class="bd">${a.h}</div><div class="rz"></div>`;wins.appendChild(w);
+ w.addEventListener("pointerdown",()=>front(id));
+ w.querySelector(".tl").onclick=e=>{const x=e.target.dataset.x;if(x==="z")w.classList.toggle("max");else if(x==="c"){w.classList.remove("on");sync()}else if(x==="m")minimize(id)};
+ const t=w.querySelector(".tb");let sx,sy,ox,oy,d=0;
+ t.onpointerdown=e=>{if(innerWidth<=760||w.classList.contains("max")||e.target.dataset.x)return;d=1;sx=e.clientX;sy=e.clientY;ox=w.offsetLeft;oy=w.offsetTop;t.setPointerCapture(e.pointerId)};
+ t.onpointermove=e=>{if(d){w.style.left=ox+e.clientX-sx+"px";w.style.top=Math.max(28,oy+e.clientY-sy)+"px"}};
+ t.onpointerup=()=>d=0;
+ t.ondblclick=e=>{if(!e.target.dataset.x)w.classList.toggle("max")};
+ const r=w.querySelector(".rz");let rw,rh,rx,ry,rd=0;
+ r.onpointerdown=e=>{rd=1;rx=e.clientX;ry=e.clientY;rw=w.offsetWidth;rh=w.offsetHeight;r.setPointerCapture(e.pointerId);e.stopPropagation()};
+ r.onpointermove=e=>{if(rd){w.style.width=Math.max(320,rw+e.clientX-rx)+"px";w.style.height=Math.max(240,rh+e.clientY-ry)+"px"}};
+ r.onpointerup=()=>rd=0;
+});
+dock.insertAdjacentHTML("beforeend",`<div class="dk" data-id="trash" data-n="Trash" style="background:linear-gradient(145deg,#b9c0cc,#7c8594)">${svg("trash")}</div>`);
+function sync(){document.querySelectorAll(".dk[data-id]").forEach(d=>{const w=$("#w-"+d.dataset.id);d.classList.toggle("run",!!w&&w.classList.contains("on"))})}
+function front(id){document.querySelectorAll(".win").forEach(w=>w.classList.remove("act"));const w=$("#w-"+id);w.classList.add("act");w.style.zIndex=++z;$("#app").textContent=APPS[id].n}
+function minimize(id){const w=$("#w-"+id),d=document.querySelector(`.dk[data-id=${id}]`).getBoundingClientRect();
+ w.style.transformOrigin=`${d.left+d.width/2-w.offsetLeft}px ${d.top-w.offsetTop}px`;w.classList.add("gone");setTimeout(()=>{w.classList.remove("gone");w.classList.remove("on");w.style.transformOrigin="";sync()},380)}
+function openApp(id){const w=$("#w-"+id);
+ if(innerWidth<=760)document.querySelectorAll(".win").forEach(x=>x!==w&&x.classList.remove("on"));
+ if(!w.classList.contains("on")){w.classList.add("on");const d=document.querySelector(`.dk[data-id=${id}]`);d.classList.add("bn");setTimeout(()=>d.classList.remove("bn"),600)}
+ front(id);sync();if(id==="terminal")setTimeout(()=>$("#ti").focus(),50)}
+document.querySelectorAll(".dk").forEach(d=>d.onclick=()=>{if(d.dataset.id==="trash"){d.classList.add("bn");setTimeout(()=>d.classList.remove("bn"),600)}else openApp(d.dataset.id)});
+// dock magnification
+const dks=[...dock.querySelectorAll(".dk")];let base=[];
+dock.onmouseenter=()=>{dks.forEach(d=>d.style.setProperty("--s",1));base=dks.map(d=>{const r=d.getBoundingClientRect();return r.left+r.width/2})};
+dock.onmousemove=e=>{if(innerWidth<=760)return;dks.forEach((d,i)=>{const f=Math.max(0,1-Math.abs(e.clientX-base[i])/130);d.style.setProperty("--s",1+.7*f*f)})};
+dock.onmouseleave=()=>dks.forEach(d=>d.style.setProperty("--s",1));
+// projects
+showP(0);document.querySelectorAll("#w-projects .sd div").forEach(d=>d.onclick=()=>{document.querySelectorAll("#w-projects .sd div").forEach(x=>x.classList.remove("sel"));d.classList.add("sel");showP(+d.dataset.i)});
+// wallpaper controls
+document.querySelectorAll(".th").forEach(t=>t.onclick=()=>setWP(WP[t.dataset.i][1],+t.dataset.i));
+document.querySelectorAll('input[type=color]').forEach((c,i)=>c.oninput=()=>{custom[i]=c.value;setWP(custom,-1)});
+const theme=m=>{const r=document.documentElement;if(m==="auto")r.removeAttribute("data-theme");else r.dataset.theme=m};
+const toggle=()=>{const r=document.documentElement,d=r.dataset.theme?r.dataset.theme==="dark":matchMedia("(prefers-color-scheme:dark)").matches;theme(d?"light":"dark")};
+document.querySelectorAll(".seg button").forEach(b=>b.onclick=()=>theme(b.dataset.m));
+try{const s=JSON.parse(localStorage.getItem("tika-wp"));if(s&&s.c){custom=s.idx<0?s.c:custom;setWP(s.c,s.idx)}else setWP(WP[0][1],0)}catch(e){setWP(WP[0][1],0)}
+// menus
+const dd=$("#dd"),ctx=$("#ctx"),act=a=>a==="theme"?toggle():openApp(a);
+$("#lg").onclick=e=>{e.stopPropagation();dd.classList.toggle("on");$("#lg").classList.toggle("o",dd.classList.contains("on"))};
+addEventListener("click",()=>{dd.classList.remove("on");ctx.classList.remove("on");$("#lg").classList.remove("o")});
+[dd,ctx].forEach(m=>m.addEventListener("click",e=>{const a=e.target.closest("[data-a]");a&&act(a.dataset.a)}));
+$("#wall").addEventListener("contextmenu",e=>{e.preventDefault();ctx.style.left=Math.min(e.clientX,innerWidth-210)+"px";ctx.style.top=Math.min(e.clientY,innerHeight-120)+"px";ctx.classList.add("on")});
+document.querySelector(".nm").parentElement.addEventListener("contextmenu",e=>{if(e.target===document.body||e.target.id==="wins"){e.preventDefault();ctx.style.left=e.clientX+"px";ctx.style.top=e.clientY+"px";ctx.classList.add("on")}});
+// terminal
+const ti=$("#ti"),tm=$("#tm");tm.onclick=()=>ti.focus();
+ti.onkeydown=e=>{if(e.key!=="Enter")return;const c=ti.value.trim().toLowerCase(),row=ti.parentElement,esc=s=>s.replace(/</g,"&lt;");
+ row.insertAdjacentHTML("beforebegin",`<div class="o"><span class="p">tika@portfolio ~ %</span> ${esc(c)}</div>`);
+ if(c==="clear")tm.querySelectorAll(".o").forEach(x=>x.remove());
+ else if(c)row.insertAdjacentHTML("beforebegin",`<div class="o">${c==="date"?new Date().toString():(CMD[c]||"command not found: "+esc(c)+" — try help")}</div>`);
+ ti.value="";tm.parentElement.scrollTop=tm.parentElement.scrollHeight};
+// clock + counter
+const tick=()=>{const d=new Date(),o={timeZone:"Asia/Kathmandu"};
+ $("#clk").textContent=d.toLocaleDateString("en-GB",{...o,weekday:"short",day:"numeric",month:"short"})+"  "+d.toLocaleTimeString("en-GB",{...o,hour:"2-digit",minute:"2-digit"});
+ $("#wt").textContent=d.toLocaleTimeString("en-GB",{...o,hour:"2-digit",minute:"2-digit"});
+ $("#wd").textContent=d.toLocaleDateString("en-GB",{...o,weekday:"long",day:"numeric",month:"long"})};tick();setInterval(tick,15000);
+const Y=Math.max(1,Math.floor((Date.now()-new Date("2022-06-01"))/31557600000));let n=0;const cs=setInterval(()=>{$("#yrs").textContent=++n;if(n>=Y)clearInterval(cs)},250);
+setTimeout(()=>openApp("about"),500);
+</script>
+</body>
+</html>
